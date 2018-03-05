@@ -1,0 +1,41 @@
+-- 우리회사 ERP
+DROP SCHEMA IF EXISTS erp_project;
+
+-- 우리회사 ERP
+CREATE SCHEMA erp_project;
+
+use erp_project;
+
+-- 부서
+CREATE TABLE department (
+	deptno   INTEGER     NOT NULL COMMENT '부서번호', -- 부서번호
+	deptname VARCHAR(20) NOT NULL COMMENT '부서명', -- 부서명
+	floor    INTEGER     NULL     COMMENT '위치', -- 위치
+	primary key(deptno)
+)
+COMMENT '부서';
+
+-- 직책
+CREATE TABLE title (
+	titleno   INTEGER     NOT NULL COMMENT '직책번호', -- 직책번호
+	titlename VARCHAR(20) NOT NULL COMMENT '직책명', -- 직책명
+	primary key(titleno)
+)
+COMMENT '직책';
+
+-- 사원
+CREATE TABLE employee (
+	empno   INTEGER     NOT NULL COMMENT '사원번호', -- 사원번호
+	empname VARCHAR(20) NOT NULL COMMENT '사원명', -- 사원명
+	titleno INTEGER     NULL     COMMENT '직책', -- 직책
+	manager INTEGER     NULL     COMMENT '관리자', -- 관리자
+	salary  INTEGER     NULL     COMMENT '급여', -- 급여
+	dno     INTEGER     NULL     COMMENT '부서', -- 부서
+	primary key(empno),
+	foreign key(manager) references employee(empno),
+	foreign key(dno) references department (deptno),
+	foreign key(titleno) references title (titleno)
+)
+COMMENT '사원';
+
+grant select, insert, update, delete on erp_project.* to 'user_erp_project' identified by '1234';
